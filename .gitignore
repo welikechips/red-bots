@@ -1,0 +1,4 @@
+red_bots_id_rsa
+terraform.tfvars
+*.auto.tfvars
+/.idea/

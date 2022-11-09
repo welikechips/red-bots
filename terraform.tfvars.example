@@ -1,0 +1,10 @@
+region                                  = "us-west-2"
+master_ami_id                           = "ami-003634241a8fcdec0"
+master_instance_type                    = "t2.micro"
+bot_ami_id                              = "ami-003634241a8fcdec0"
+bot_instance_type                       = "t2.micro"
+_count                                  = <how-many-bots-integer>
+env                                     = "test"
+subnet                                  = "10.0.0.0/24"
+availability_zones                      = ["us-west-2a"]
+spot_type                               = "(persistent, one-time)"
