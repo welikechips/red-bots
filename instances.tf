@@ -12,7 +12,7 @@ resource "aws_instance" "master" {
   count = 1
 
   # All four instances will have the same ami and instance_type
-  ami           = lookup(var.master_ami_id, var.region)
+  ami           = var.master_ami_id
   instance_type = var.master_instance_type #
   tags          = {
     # The count.index allows you to launch a resource
@@ -46,7 +46,7 @@ resource "aws_spot_instance_request" "bots" {
   spot_type = var.spot_type
 
   # All four instances will have the same ami and instance_type
-  ami           = lookup(var.bot_ami_id, var.region)
+  ami           = var.bot_ami_id
   instance_type = var.bot_instance_type #
   tags          = {
     # The count.index allows you to launch a resource
