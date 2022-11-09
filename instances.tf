@@ -9,8 +9,6 @@ resource "null_resource" "save_cert" {
 
 
 resource "aws_instance" "master" {
-  count = 1
-
   # All four instances will have the same ami and instance_type
   ami           = var.master_ami_id
   instance_type = var.master_instance_type #
