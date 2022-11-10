@@ -4,7 +4,7 @@ resource "aws_vpc" "red_bots_vpc" {
     enable_dns_hostnames    = true
     enable_dns_support      = true
     tags = {
-        Name = "${var.env} red_bots_vpc"
+        Name = "${var.env}_red_bots_vpc"
     }
 }
 
@@ -23,7 +23,7 @@ resource "aws_default_route_table" "red_bots_route_table" {
         gateway_id = aws_internet_gateway.red_bots_gw.id
     }
     tags = {
-        Name = "${var.env} redbots default route table"
+        Name = "${var.env}_red_bots_default_route_table"
         env  = var.env
     }
 }
