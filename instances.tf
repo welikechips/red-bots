@@ -7,15 +7,14 @@ resource "null_resource" "save_cert" {
   }
 }
 
-
-resource "aws_instance" "master" {
+resource "aws_instance" "red_bot_master_redirector" {
   # All four instances will have the same ami and instance_type
   ami           = var.master_ami_id
   instance_type = var.master_instance_type #
   tags          = {
     # The count.index allows you to launch a resource
     # starting with the distinct index number 0 and corresponding to this instance.
-    Name = "red-bot-master"
+    Name = "${var.env}_red_bot_master_redirector"
   }
   connection {
     user        = "ubuntu"
