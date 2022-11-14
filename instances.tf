@@ -13,7 +13,7 @@ resource "aws_instance" "red_bot_master_redirector" {
   instance_type = var.master_instance_type #
   security_groups = [
     aws_security_group.red_bots_port_22_ssh_access_cidrs.id,
-    aws_default_security_group.default.id
+    aws_default_security_group.red_bots_default.id
   ]
   tags          = {
     # The count.index allows you to launch a resource
@@ -73,7 +73,7 @@ resource "aws_spot_instance_request" "bots" {
   spot_type = var.spot_type
   security_groups = [
     aws_security_group.red_bots_port_22_ssh_access_cidrs.id,
-    aws_default_security_group.default.id
+    aws_default_security_group.red_bots_default.id
   ]
 
   # All four instances will have the same ami and instance_type
