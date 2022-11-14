@@ -23,4 +23,5 @@ resource "aws_security_group_rule" "red_bots_security_group_for_api" {
   protocol          = "tcp"
   cidr_blocks       = [aws_instance.red_bot_master_redirector.public_ip]
   security_group_id = data.aws_security_group.selected.id
+  description = "${aws_instance.red_bot_master_redirector.public_ip} ${var.env} Master Redirector"
 }

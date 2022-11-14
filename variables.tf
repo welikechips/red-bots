@@ -63,3 +63,8 @@ variable "api_end_point_security_group_id" {
   type        = string
   description = "Security group to attach master redirector to allow ingress to api"
 }
+
+variable "red_bots_port_22_ssh_access_cidrs" {
+  type        = list
+  description = "The ip address cidrs you are using to access c2 infrastructure."
+}

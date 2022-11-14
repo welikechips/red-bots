@@ -11,6 +11,10 @@ resource "aws_instance" "red_bot_master_redirector" {
   # All four instances will have the same ami and instance_type
   ami           = var.master_ami_id
   instance_type = var.master_instance_type #
+  security_groups = [
+    aws_security_group.red_bots_port_22_ssh_access_cidrs.id,
+    aws_default_security_group.default.id
+  ]
   tags          = {
     # The count.index allows you to launch a resource
     # starting with the distinct index number 0 and corresponding to this instance.
@@ -67,6 +71,10 @@ resource "null_resource" "red_bot_master_provisioning" {
 resource "aws_spot_instance_request" "bots" {
   count = var._count
   spot_type = var.spot_type
+  security_groups = [
+    aws_security_group.red_bots_port_22_ssh_access_cidrs.id,
+    aws_default_security_group.default.id
+  ]
 
   # All four instances will have the same ami and instance_type
   ami           = var.bot_ami_id
