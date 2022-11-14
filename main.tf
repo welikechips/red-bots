@@ -21,7 +21,7 @@ resource "aws_security_group_rule" "red_bots_security_group_for_api" {
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = [aws_instance.red_bot_master_redirector.public_ip]
+  cidr_blocks       = ["${aws_instance.red_bot_master_redirector.public_ip}/32"]
   security_group_id = data.aws_security_group.selected.id
   description = "${aws_instance.red_bot_master_redirector.public_ip} ${var.env} Master Redirector"
 }
