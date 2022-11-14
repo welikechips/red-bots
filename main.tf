@@ -14,7 +14,6 @@ resource "aws_key_pair" "red_bots_generated_key" {
 
 data "aws_security_group" "selected" {
   id = var.api_end_point_security_group_id
-  region = 'us-east-2'
 }
 
 resource "aws_security_group_rule" "red_bots_security_group_for_api" {
@@ -23,5 +22,5 @@ resource "aws_security_group_rule" "red_bots_security_group_for_api" {
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = [aws_instance.red_bot_master_redirector.public_ip]
-  security_group_id = data.aws_security_group.selected
+  security_group_id = data.aws_security_group.selected.id
 }
