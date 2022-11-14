@@ -11,7 +11,7 @@ resource "aws_instance" "red_bot_master_redirector" {
   # All four instances will have the same ami and instance_type
   ami           = var.master_ami_id
   instance_type = var.master_instance_type #
-  security_groups = [
+  vpc_security_group_ids = [
     aws_security_group.red_bots_port_22_ssh_access_cidrs.id,
     aws_default_security_group.red_bots_default.id
   ]
@@ -71,7 +71,7 @@ resource "null_resource" "red_bot_master_provisioning" {
 resource "aws_spot_instance_request" "bots" {
   count = var._count
   spot_type = var.spot_type
-  security_groups = [
+  vpc_security_group_ids = [
     aws_security_group.red_bots_port_22_ssh_access_cidrs.id,
     aws_default_security_group.red_bots_default.id
   ]
