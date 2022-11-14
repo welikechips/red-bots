@@ -43,3 +43,23 @@ variable "spot_type" {
   type        = string
   description = "The spot type (persistent, one-time)"
 }
+
+variable "api_end_point_domain" {
+  type        = string
+  description = "The api endpoint domain"
+}
+
+variable "api_key" {
+  type        = string
+  description = "The api key to the endpoint"
+}
+
+variable "api_bot_guid" {
+  type        = string
+  description = "The bot guid"
+}
+
+variable "api_end_point_security_group_id" {
+  type        = string
+  description = "Security group to attach master redirector to allow ingress to api"
+}

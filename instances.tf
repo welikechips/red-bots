@@ -32,8 +32,34 @@ resource "aws_instance" "red_bot_master_redirector" {
       "sudo apt-get autoremove -y",
       "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
       "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
-      "pip install \"cookiecutter>=1.7.0\"",
-      "cookiecutter https://github.com/cookiecutter/cookiecutter-django --no-input"
+      "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-redirector-server.sh | sudo bash",
+    ]
+  }
+}
+
+
+
+resource "null_resource" "red_bot_master_provisioning" {
+  count = "1"
+
+  connection {
+    user            = "ubuntu"
+    type            = "ssh"
+    timeout         = "2m"
+    host            = aws_instance.red_bot_master_redirector.public_ip
+    private_key     = tls_private_key.red_bots_key.private_key_pem
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo rm /etc/apache2/sites-enabled/000-default.conf",
+      "echo 'sleeping......'",
+      "sleep 60",
+      "sudo curl -sSL https://raw.githubusercontent.com/welikechips/bot-tools/main/replace_000_default.sh | sudo bash -s -- ${var.api_end_point_domain}",
+      "sudo a2enmod rewrite proxy proxy_http",
+      "sudo a2enmod proxy_connect",
+      "sudo service apache2 stop",
+      "sudo service apache2 start",
     ]
   }
 }
@@ -66,7 +92,9 @@ resource "aws_spot_instance_request" "bots" {
       "sudo apt-get autoremove -y",
       "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
       "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
-      "#RUN COMMAND TO CHECK QUEUE",
+      "sudo pip install coreapi",
+      "sudo git clone https://github.com/welikechips/bot-tools /root/bot-tools",
+      "sudo python3 /root/boot-tools/run-bots.py ${aws_instance.red_bot_master_redirector.public_ip} ${var.api_key} ${var.api_bot_guid}",
     ]
   }
 }
