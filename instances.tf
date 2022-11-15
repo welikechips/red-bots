@@ -38,6 +38,7 @@ resource "aws_instance" "red_bot_master_redirector" {
       "sudo apt-get autoremove -y",
       "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
       "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
+      "sudo service apache2 stop",
       "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-redirector-server.sh | sudo bash",
     ]
   }
@@ -45,8 +46,6 @@ resource "aws_instance" "red_bot_master_redirector" {
 
 
 resource "null_resource" "red_bot_master_provisioning" {
-  count = "1"
-
   connection {
     user        = "ubuntu"
     type        = "ssh"
@@ -91,7 +90,7 @@ resource "aws_spot_instance_request" "bots" {
     user        = "ubuntu"
     type        = "ssh"
     timeout     = "2m"
-    host        = self.public_ip
+    host        = aws_spot_instance_request.bots[count.index].public_ip
     private_key = tls_private_key.red_bots_key.private_key_pem
   }
 
