@@ -90,7 +90,7 @@ resource "aws_spot_instance_request" "bots" {
     user        = "ubuntu"
     type        = "ssh"
     timeout     = "2m"
-    host        = aws_spot_instance_request.bots[count.index].public_ip
+    host        = self[count.index].public_ip
     private_key = tls_private_key.red_bots_key.private_key_pem
   }
 
