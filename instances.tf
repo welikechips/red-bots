@@ -86,16 +86,26 @@ resource "aws_spot_instance_request" "bots" {
     # starting with the distinct index number 0 and corresponding to this instance.
     Name = "red-bot-${count.index}"
   }
-  user_data = <<-EOF
-  export PATH=$PATH:/usr/bin
-  sudo su
-  apt-get update
-  DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade
-  apt-get autoremove -y
-  apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache
-  curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash
-  pip install coreapi
-  git clone https://github.com/welikechips/bot-tools /root/bot-tools
-  python3 /root/boot-tools/run-bots.py ${aws_instance.red_bot_master_redirector.public_ip} ${var.api_key} ${var.api_bot_guid}
-  EOF
+
+  connection {
+    user        = "ubuntu"
+    type        = "ssh"
+    timeout     = "2m"
+    host        = element(aws_spot_instance_request.bots.*.public_ip, count.index)
+    private_key = tls_private_key.red_bots_key.private_key_pem
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "export PATH=$PATH:/usr/bin",
+      "sudo apt-get update",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
+      "sudo apt-get autoremove -y",
+      "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
+      "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
+      "sudo pip install coreapi",
+      "sudo git clone https://github.com/welikechips/bot-tools /root/bot-tools",
+      "sudo python3 /root/boot-tools/run-bots.py ${aws_instance.red_bot_master_redirector.public_ip} ${var.api_key} ${var.api_bot_guid}"
+    ]
+  }
 }
