@@ -38,3 +38,19 @@ resource "aws_subnet" "red_bots_subnet" {
         Env  = var.env
     }
 }
+
+resource "aws_route53_record" "main" {
+    zone_id = var.hosted_zone_id
+    name    = var.server_name
+    type    = "A"
+    ttl     = "300"
+    records = [aws_instance.red_bot_master_redirector.public_ip]
+}
+
+resource "aws_route53_record" "www" {
+    zone_id = var.hosted_zone_id
+    name    = "www.${var.server_name}"
+    type    = "A"
+    ttl     = "300"
+    records = [aws_instance.red_bot_master_redirector.public_ip]
+}

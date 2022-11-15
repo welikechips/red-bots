@@ -38,3 +38,30 @@ resource "aws_default_security_group" "red_bots_default" {
     Name = "${var.env} redbots default security group"
   }
 }
+
+resource "aws_security_group" "red_bots_allow_certbot" {
+  name = "red_bots_allow_certbot"
+  vpc_id = aws_vpc.red_bots_vpc.id
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+  }
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+  }
+  // Terraform removes the default rule
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "${var.env} allow certbot to connect and get ssl cert setup."
+  }
+}

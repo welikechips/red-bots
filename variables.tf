@@ -68,3 +68,18 @@ variable "red_bots_port_22_ssh_access_cidrs" {
   type        = list
   description = "The ip address cidrs you are using to access c2 infrastructure."
 }
+
+variable "server_name" {
+  type = string
+  description = "The ssl cert server name"
+}
+
+variable "contact_email" {
+  type = string
+  description = "contact email for certbot renewals"
+}
+
+variable "hosted_zone_id" {
+  type = string
+  description = "The hosted zone id for the redirector server"
+}
