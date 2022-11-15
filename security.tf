@@ -19,7 +19,6 @@ resource "aws_security_group" "red_bots_port_22_ssh_access_cidrs" {
   }
 }
 resource "aws_default_security_group" "red_bots_default" {
-  name = "red_bots_default_security_group"
   vpc_id = aws_vpc.red_bots_vpc.id
 
   ingress {
