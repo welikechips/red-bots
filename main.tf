@@ -8,7 +8,7 @@ resource "tls_private_key" "red_bots_key" {
 }
 
 resource "aws_key_pair" "red_bots_generated_key" {
-  key_name   = "red-bots-private-key"
+  key_name   = "${var.env}-red-bots-private-key"
   public_key = tls_private_key.red_bots_key.public_key_openssh
 }
 
