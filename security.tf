@@ -7,7 +7,6 @@ resource "aws_security_group" "red_bots_port_22_ssh_access_cidrs" {
     to_port = 22
     protocol = "tcp"
   }
-  // Terraform removes the default rule
   egress {
     from_port = 0
     to_port = 0
@@ -43,18 +42,17 @@ resource "aws_security_group" "red_bots_allow_certbot" {
   name = "red_bots_allow_certbot"
   vpc_id = aws_vpc.red_bots_vpc.id
   ingress {
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.red_bots_master_redirector_access_cidrs
     from_port = 443
     to_port = 443
     protocol = "tcp"
   }
   ingress {
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.red_bots_master_redirector_access_cidrs
     from_port = 80
     to_port = 80
     protocol = "tcp"
   }
-  // Terraform removes the default rule
   egress {
     from_port = 0
     to_port = 0

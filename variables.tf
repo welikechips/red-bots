@@ -66,7 +66,12 @@ variable "api_end_point_security_group_id" {
 
 variable "red_bots_port_22_ssh_access_cidrs" {
   type        = list
-  description = "The ip address cidrs you are using to access c2 infrastructure."
+  description = "The ip address cidrs you are using to access master and bots."
+}
+
+variable "red_bots_master_redirector_access_cidrs" {
+  type        = list
+  description = "The ip address cidrs you are using to access master redirector."
 }
 
 variable "server_name" {

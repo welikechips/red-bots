@@ -37,9 +37,8 @@ resource "aws_instance" "red_bot_master_redirector" {
       "sudo apt-get update",
       "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
       "sudo apt-get autoremove -y",
-      "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
+      "sudo apt-get install -y git tmux curl tar zip gnome-terminal",
       "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
-      "sudo service apache2 stop",
       "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-redirector-server.sh | sudo bash",
     ]
   }
@@ -58,12 +57,12 @@ resource "null_resource" "red_bot_master_provisioning" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo rm /etc/apache2/sites-enabled/000-default.conf",
+      "sudo rm /etc/apache2/sites-enabled/000-default-le-ssl.conf",
       "echo 'sleeping......'",
       "sleep 60",
       "sudo certbot certonly -d \"www.${var.server_name},${var.server_name}\" --apache -n --agree-tos -m \"${var.contact_email}\"",
       "sudo curl -sSL https://raw.githubusercontent.com/welikechips/bot-tools/main/replace_000_default.sh | sudo bash -s -- ${var.api_end_point_domain}",
-      "sudo curl -sSL https://raw.githubusercontent.com/welikechips/bot-tools/main/replace_default_le_ssl.sh | sudo bash -s -- ${var.api_end_point_domain}",
+      "sudo curl -sSL https://raw.githubusercontent.com/welikechips/bot-tools/main/replace_default_le_ssl.sh | sudo bash -s -- ${var.api_end_point_domain} ${var.server_name}",
       "sudo a2enmod ssl rewrite proxy proxy_http",
       "sudo a2ensite default-ssl.conf",
       "sudo a2enmod proxy_connect",
@@ -135,9 +134,9 @@ resource "null_resource" "run_bots" {
 
   provisioner "remote-exec" {
     inline = [
+      "sudo rm -rf /root/bot-tools/",
       "sudo git clone https://github.com/welikechips/bot-tools /root/bot-tools",
-      "echo \"python3 /root/bot-tools/run-bots.py ${aws_instance.red_bot_master_redirector.private_ip} ${var.api_key} ${var.api_bot_guid}\" > /tmp/run-bot.txt",
-      "sudo python3 /root/bot-tools/run-bots.py ${aws_instance.red_bot_master_redirector.private_ip} ${var.api_key} ${var.api_bot_guid}"
+      "sudo python3 /root/bot-tools/run-bots.py \"${var.server_name}\" \"${var.api_key}\" \"${var.api_bot_guid}\""
     ]
   }
 }
