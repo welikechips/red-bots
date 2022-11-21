@@ -8,7 +8,6 @@ resource "null_resource" "save_cert" {
 }
 
 resource "aws_instance" "red_bot_master_redirector" {
-  # All four instances will have the same ami and instance_type
   ami                    = var.master_ami_id
   instance_type          = var.master_instance_type
   key_name               = aws_key_pair.red_bots_generated_key.key_name
@@ -19,8 +18,6 @@ resource "aws_instance" "red_bot_master_redirector" {
     aws_security_group.red_bots_allow_certbot.id
   ]
   tags = {
-    # The count.index allows you to launch a resource
-    # starting with the distinct index number 0 and corresponding to this instance.
     Name = "${var.env}_red_bot_master_redirector"
   }
   connection {
@@ -88,7 +85,6 @@ resource "aws_spot_instance_request" "bots" {
 }
 
 resource "aws_ec2_tag" "bot_tagger" {
-  depends_on  = [aws_spot_instance_request.bots]
   count       = var._count
   resource_id = element(aws_spot_instance_request.bots.*.spot_instance_id, count.index)
   key         = "Name"
@@ -97,7 +93,6 @@ resource "aws_ec2_tag" "bot_tagger" {
 
 resource "null_resource" "bot_provisioner" {
   count      = var._count
-  depends_on = [aws_spot_instance_request.bots]
 
   connection {
     user        = "ubuntu"
@@ -122,7 +117,6 @@ resource "null_resource" "bot_provisioner" {
 
 resource "null_resource" "run_bots" {
   count      = var._count
-  depends_on = [null_resource.bot_provisioner]
 
   connection {
     user        = "ubuntu"
