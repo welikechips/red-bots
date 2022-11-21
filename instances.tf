@@ -119,8 +119,8 @@ resource "null_resource" "bot_provisioner" {
 
 resource "null_resource" "run_bots" {
   depends_on = [null_resource.bot_provisioner]
+  count      = var._count
 
-  for_each = var._count
   connection {
     user        = "ubuntu"
     type        = "ssh"
