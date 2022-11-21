@@ -127,9 +127,10 @@ resource "null_resource" "run_bots" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo rm -rf /root/bot-tools/",
-      "sudo git clone https://github.com/welikechips/bot-tools /root/bot-tools",
-      "sudo python3 /root/bot-tools/run-bots.py \"${var.server_name}\" \"${var.api_key}\" \"${var.api_bot_guid}\""
+      "rm -rf ~/bot-tools/",
+      "git clone https://github.com/welikechips/bot-tools ~/bot-tools",
+      "cd ~/bot-tools && pip3 install -r requirements.txt",
+      "cd ~/bot-tools && python3 run-bots.py \"${var.server_name}\" \"${var.api_key}\" \"${var.api_bot_guid}\""
     ]
   }
 }
