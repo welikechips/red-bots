@@ -92,6 +92,7 @@ resource "aws_ec2_tag" "bot_tagger" {
 }
 
 resource "null_resource" "bot_provisioner" {
+  depends_on = [aws_ec2_tag.bot_tagger]
   count      = var._count
 
   connection {
@@ -117,8 +118,9 @@ resource "null_resource" "bot_provisioner" {
 }
 
 resource "null_resource" "run_bots" {
-  count      = var._count
+  depends_on = [null_resource.bot_provisioner]
 
+  for_each = var._count
   connection {
     user        = "ubuntu"
     type        = "ssh"
