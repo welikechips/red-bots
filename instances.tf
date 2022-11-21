@@ -108,7 +108,7 @@ resource "null_resource" "bot_provisioner" {
       "sudo apt-get update",
       "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
       "sudo apt-get autoremove -y",
-      "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
+      "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache chromium-browser",
       "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
       "sudo curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -",
       "sudo apt-get install -y nodejs"
