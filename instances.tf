@@ -108,8 +108,10 @@ resource "null_resource" "bot_provisioner" {
       "sudo apt-get update",
       "sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" dist-upgrade",
       "sudo apt-get autoremove -y",
-      "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache nodejs",
+      "sudo apt-get install -y git tmux curl tar zip gnome-terminal python3-pip apache2 libapache2-mod-wsgi-py3 certbot python3-certbot-apache",
       "sudo curl -sSL https://raw.githubusercontent.com/welikechips/chips/master/tools/install-chips-defaults.sh | sudo bash",
+      "sudo curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -",
+      "sudo apt-get install -y nodejs"
     ]
   }
 }
@@ -130,7 +132,7 @@ resource "null_resource" "run_bots" {
       "rm -rf ~/bot-tools/",
       "git clone https://github.com/welikechips/bot-tools ~/bot-tools",
       "cd ~/bot-tools && pip3 install -r requirements.txt",
-      "cd ~/bot-tools && python3 run-bots.py \"${var.server_name}\" \"${var.api_key}\" \"${var.api_bot_guid}\""
+      "cd ~/bot-tools && python3 run-bots.py \"${var.server_name}\" \"${var.api_end_point_domain}\" \"${var.api_key}\" \"${var.api_bot_guid}\""
     ]
   }
 }
