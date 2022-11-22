@@ -134,7 +134,7 @@ resource "null_resource" "run_bots" {
       "rm -rf ~/bot-tools/",
       "git clone https://github.com/welikechips/bot-tools ~/bot-tools",
       "cd ~/bot-tools && pip3 install -r requirements.txt",
-      "cd ~/bot-tools && python3 run-bots.py \"${var.server_name}\" \"${var.api_end_point_domain}\" \"${var.api_key}\" \"${var.api_bot_guid}\""
+      "cd ~/bot-tools && python3 run-bots.py --job_index ${count.index} \"${var.server_name}\" \"${var.api_end_point_domain}\" \"${var.api_key}\" \"${var.api_bot_guid}\""
     ]
   }
 }
