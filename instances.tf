@@ -73,24 +73,24 @@ resource "aws_ec2_tag" "bot_tagger" {
 }
 
 # Comment this resource if create-ami.tf is uncommented
-#resource "null_resource" "run_bots" {
-#  depends_on = [aws_ec2_tag.bot_tagger]
-#  count      = var._count
-#
-#  connection {
-#    user        = "ubuntu"
-#    type        = "ssh"
-#    timeout     = "10s"
-#    host        = element(aws_spot_instance_request.bots.*.public_ip, count.index)
-#    private_key = tls_private_key.red_bots_key.private_key_pem
-#  }
-#
-#  provisioner "remote-exec" {
-#    inline = [
-#      "rm -rf ~/bot-tools/",
-#      "git clone https://github.com/welikechips/bot-tools ~/bot-tools",
-#      "cd ~/bot-tools && pip3 install -r requirements.txt",
-#      "cd ~/bot-tools && python3 run-bots.py --job_index ${count.index} \"${var.server_name}\" \"${var.api_end_point_domain}\" \"${var.api_key}\" \"${var.api_bot_guid}\""
-#    ]
-#  }
-#}
+resource "null_resource" "run_bots" {
+  depends_on = [aws_ec2_tag.bot_tagger]
+  count      = var._count
+
+  connection {
+    user        = "ubuntu"
+    type        = "ssh"
+    timeout     = "10s"
+    host        = element(aws_spot_instance_request.bots.*.public_ip, count.index)
+    private_key = tls_private_key.red_bots_key.private_key_pem
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "rm -rf ~/bot-tools/",
+      "git clone https://github.com/welikechips/bot-tools ~/bot-tools",
+      "cd ~/bot-tools && pip3 install -r requirements.txt",
+      "cd ~/bot-tools && python3 run-bots.py --job_index ${count.index} \"${var.server_name}\" \"${var.api_end_point_domain}\" \"${var.api_key}\" \"${var.api_bot_guid}\""
+    ]
+  }
+}
