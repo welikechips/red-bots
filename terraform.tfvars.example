@@ -1,8 +1,11 @@
 region                                  = "us-east-2"
-master_ami_id                           = "ami-07f3697f0f350a045" # Ubuntu fresh "ami-0a59f0e26c55590e9"
+master_ami_id                           = "ami-07f3697f0f350a045"
+# https://us-east-2.console.aws.amazon.com/ec2/home?region=us-east-2#ImageDetails:imageId=ami-07f3697f0f350a045
+# Ubuntu fresh "ami-0a59f0e26c55590e9"
 master_instance_type                    = "t2.micro"
-bot_ami_id                              = "ami-0f0d7654fc705abc5" # Ubuntu fresh "ami-0a59f0e26c55590e9"
-bot_instance_type                       = "t2.micro"
+bot_ami_id                              = "ami-00e90c6440c90b3f7"
+# https://us-east-2.console.aws.amazon.com/ec2/home?region=us-east-2#ImageDetails:imageId=ami-00e90c6440c90b3f7
+# Ubuntu fresh "ami-0a59f0e26c55590e9"
 _count                                  = <how-many-bots-integer>
 env                                     = "<your-env>"
 subnet                                  = "10.0.0.0/16"
