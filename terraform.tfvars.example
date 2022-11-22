@@ -1,10 +1,20 @@
-region                                  = "us-west-2"
-master_ami_id                           = "ami-003634241a8fcdec0"
+region                                  = "us-east-2"
+master_ami_id                           = "ami-07f3697f0f350a045" # Ubuntu fresh "ami-0a59f0e26c55590e9"
 master_instance_type                    = "t2.micro"
-bot_ami_id                              = "ami-003634241a8fcdec0"
+bot_ami_id                              = "ami-0f0d7654fc705abc5" # Ubuntu fresh "ami-0a59f0e26c55590e9"
 bot_instance_type                       = "t2.micro"
 _count                                  = <how-many-bots-integer>
-env                                     = "test"
-subnet                                  = "10.0.0.0/24"
-availability_zones                      = ["us-west-2a"]
+env                                     = "<your-env>"
+subnet                                  = "10.0.0.0/16"
+availability_zones                      = ["us-east-2a"]
 spot_type                               = "(persistent, one-time)"
+api_end_point_domain                    = "<api_endpoint.com>"
+api_key                                 = "<django api key>"
+api_bot_guid                            = "<bot-guid>"
+api_end_point_security_group_id         = "<api security group>"
+red_bots_port_22_ssh_access_cidrs       = ["<your-ip>/32", "<jump-box>/32"]
+# your-ip, jump-box, everywhere for certbot
+red_bots_master_redirector_access_cidrs = ["<your-ip>/32", "<jump-box>/32", "0.0.0.0/0"]
+server_name                             = "<madeup-domain-rout53.com>"
+hosted_zone_id                          = "<madeup-domain-zone-id>"
+contact_email                           = "<your email.com>"
